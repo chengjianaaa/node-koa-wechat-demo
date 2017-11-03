@@ -5,18 +5,18 @@ import R from 'ramda'
 
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
-const MIDDLEWARES = ['database', 'router.js']
+const MIDDLEWARES = ['database', 'general', 'router.js']
 const r = path => resolve(__dirname, path)
 let config = require('../nuxt.config.js')
 config.env = !(process.env === 'production')
 
 class Server {
-  constructor(){
+  constructor() {
     this.app = new Koa()
     console.log('server constructor start')
     this.useMiddleWares(this.app)(MIDDLEWARES)
   }
-  useMiddleWares(app){
+  useMiddleWares(app) {
     return R.map(R.compose(
       R.map(i => i(app)),
       require,

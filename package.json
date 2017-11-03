@@ -14,14 +14,17 @@
   "dependencies": {
     "axios": "^0.17.0",
     "cross-env": "^5.0.1",
+    "ejs": "^2.5.7",
     "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
     "mongoose": "^4.12.6",
     "nuxt": "1.0.0-alpha1",
     "pug": "^2.0.0-rc.4",
     "ramda": "^0.25.0",
     "sha1": "^1.1.1",
-    "source-map-support": "^0.4.15"
+    "source-map-support": "^0.4.15",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
