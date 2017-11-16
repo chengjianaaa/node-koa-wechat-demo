@@ -15,7 +15,7 @@ export default function(options, reply) {
       timestamp,
       echostr
     } = ctx.query
-    console.log('测试微信验证')
+    console.log('----------微信的query-------------')
     console.log(ctx.query)
     const str = [token, timestamp, nonce].sort().join('')
     const sha = sha1(str)
@@ -29,13 +29,13 @@ export default function(options, reply) {
         ctx.body = 'GET -- Signature Error'
       }
     } else if (ctx.method === METHOD_POST) {
-      console.log('POST --- 来自微信')
+      console.log('----------微信的POST-------------')
       if (sha !== signature) {
         console.log('POST -- Signature Error')
         ctx.body = 'POST -- Signature Error'
         return false
       }
-      console.log('解析微信传过来的xml消息')
+      console.log('解析微信传过来的xml消息......')
       // 解析微信传过来的xml消息
       const XMLDataFromWechat = await getRawBody(ctx.req, {
         length: ctx.length,
@@ -43,30 +43,25 @@ export default function(options, reply) {
         encoding: ctx.charset
       })
       console.log(XMLDataFromWechat)
-      console.log('-----------------------')
+      console.log('----------接受的数据-------------')
       const JSONDataFromWechat = await util.parseXML(XMLDataFromWechat)
       console.log(JSONDataFromWechat)
-      ctx.wechat = {}
+
+      // 提取重要信息(tpl模版需要)
+      const message = util.formatMessage(JSONDataFromWechat.xml)
+      ctx.formatDataFromWechat = message
+
       // 根据消息,调用相应的业务逻辑
       await reply.apply(ctx, [ctx, next])
   
       // 组装xml消息返回给微信
-      const replyData = ctx.body
-      const msg = ctx.wechat
-      console.log(replyData)
-      const xml = `<xml>
-                    <ToUserName><![CDATA[${JSONDataFromWechat.xml.FromUserName[0]}]]></ToUserName>
-                    <FromUserName><![CDATA[${JSONDataFromWechat.xml.ToUserName[0]}]]></FromUserName>
-                    <CreateTime>12345678</CreateTime>
-                    <MsgType><![CDATA[text]]></MsgType>
-                    <Content><![CDATA[${replyData}]]></Content>
-                  </xml>`
-      // console.log(xml)
+      const xml = util.tpl(ctx.formatDataFromWechat, ctx.replyData)
+      console.log('----------回复的数据-------------')
+      console.log(xml.trim())
       ctx.status = 200
       ctx.type = TYPE_XML
       ctx.body = xml
     }
   }
-  
   return wechatMessageMiddleware
 }

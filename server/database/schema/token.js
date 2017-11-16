@@ -29,13 +29,14 @@ TokenSchema.pre('save', function(next) {
 
 TokenSchema.statics = {
   async getAccessToken() {
-    const token = await this.findOne({name : ACCESS_TOKEN}).exec()
+    const token = await this.findOne({name: ACCESS_TOKEN}).exec()
     if (token && token.token) {
       token.access_token = token.token
     }
     return token
   },
   async saveAccessToken(data) {
+    console.log('----保存前的saveAccessToken---')
     let token = await this.findOne({ name: ACCESS_TOKEN }).exec()
     if (token) {
       // 更新token
@@ -50,8 +51,11 @@ TokenSchema.statics = {
       })
     }
 
-    // TODO 异常捕获
-    await token.save()
+    try {
+      await token.save()
+    } catch (error) {
+      console.log(error)
+    }
 
     return data
   }

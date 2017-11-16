@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import config from '../config'
 import Wechat from '../wechat-lib'
 const Token = mongoose.model('Token')
+const Ticket = mongoose.model('Ticket')
 
 const wechatConfig = {
   wechat: {
@@ -9,7 +10,9 @@ const wechatConfig = {
     appSecret: config.wechat.appSecret,
     token: config.wechat.token,
     getAccessToken: async () => await Token.getAccessToken(),
-    saveAccessToken: async (token) => await Token.saveAccessToken(token)
+    saveAccessToken: async (token) => await Token.saveAccessToken(token),
+    getTicket: async () => await Ticket.getTicket(),
+    saveTicket: async (ticket) => await Ticket.saveTicket(ticket)
   }
 }
 
@@ -17,4 +20,4 @@ export const getWechat = () => {
   const wechatClient = new Wechat(wechatConfig.wechat)
   return wechatClient
 }
-getWechat()
+// getWechat()
