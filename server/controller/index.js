@@ -1,5 +1,7 @@
-import { signature } from './wechat'
+import { signature, redirect, oauth } from './wechat'
 
 export {
-  signature
+  signature,
+  redirect,
+  oauth
 }

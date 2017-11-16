@@ -28,7 +28,7 @@ export default {
   beforeMount () {
     const wx = window.wx
     const currentUrl = window.location.href
-    this.$store.dispatch('getWechatSignature', currentUrl).then( res => {
+    this.$store.dispatch('getWechatSignature', encodeURIComponent(currentUrl)).then( res => {
       console.log(res)
       if (res.data.success) {
         // 拿到params
