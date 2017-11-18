@@ -6,7 +6,7 @@ module.exports = {
     title: 'starter',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      // { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'Nuxt.js project' }
     ],
     link: [
@@ -21,7 +21,20 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: ['~static/css/main.css'],
+  // css: ['~static/css/main.css'],
+  css: [
+    {
+      src: '~static/sass/base.sass',
+      lang: 'sass?indentedSyntax=true'
+    },
+    {
+      src: 'swiper/dist/css/swiper.css'
+    }
+  ],
+  plugins: [
+    { src: '~plugins/swiper.js', ssr: false },
+    { src: '~plugins/flexible.js', ssr: false }
+  ],
   /*
   ** Customize the progress-bar color
   */

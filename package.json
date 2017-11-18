@@ -24,6 +24,7 @@
     "ramda": "^0.25.0",
     "sha1": "^1.1.1",
     "source-map-support": "^0.4.15",
+    "vue-awesome-swiper": "^2.6.7",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
@@ -40,7 +41,10 @@
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
+    "node-sass": "^4.6.1",
     "nodemon": "^1.11.0",
-    "scmp": "^2.0.0"
+    "sass-loader": "^6.0.6",
+    "scmp": "^2.0.0",
+    "webpack": "^3.8.1"
   }
 }

@@ -1,9 +1,10 @@
 // import Vue from 'vue'
 import Vuex from 'vuex'
+import createLogger from 'vuex/dist/logger'
 import actions from './actions'
 import getters from './getters'
 import mutations from './mutations'
-// import state from './state'
+import state from './state'
 
 // Vue.use(Vuex)
 
@@ -14,31 +15,15 @@ import mutations from './mutations'
 //   state,
 //   strict: true
 // })
-
+const debug = process.env.NODE_ENV !== 'production'
 const createStore = () => {
   return new Vuex.Store({
-    state: {
-      imageCDN: '你的七牛 CDN',
-      homePageScroll: {
-        'home': 0,
-        'house': 0
-      },
-      APICharacters: null,
-      IMDb: null,
-      authUser: null,
-      shoppingScroll: 0,
-      houses: [],
-      characters: [],
-      focusHouse: {},
-      focusCharacter: {},
-      user: null,
-      products: [],
-      focusProduct: {},
-      payments: []
-    },
+    state,
     getters,
     actions,
-    mutations
+    mutations,
+    // strict: true,
+    plugins: debug ? [createLogger()] : []
   })
 }
 

@@ -1,9 +1,9 @@
 import { getWechat, getOAuthWechat } from '../wechat/'
 
-const wechatClient = getWechat() // 拿到wechat类实例
+// const wechatClient = getWechat() // 拿到wechat类实例
 export async function getSignatureAsync(url) {
   console.log('--------api --- getSignatureAsync----------')
-  // const wechatClient = getWechat() // 拿到wechat类实例
+  const wechatClient = getWechat() // 拿到wechat类实例
   // 拿到AccessToken
   console.log('---------await wechatClient.fetchAccessToken()----------')
   const { access_token: accessToken } = await wechatClient.fetchAccessToken()
