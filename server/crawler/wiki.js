@@ -5,18 +5,16 @@ import rp from 'request-promise'
 import _ from 'lodash'
 import { writeFileSync } from 'fs'
 import { resolve } from 'path'
- 
+import { updateImage } from '../libs/qiniu'
+import randomToken from 'random-token'
 let time = 0
 let detailTime = 0
+const sleep = time => new Promise(resolve => setTimeout(resolve, time))
 const getWikiCharacters = async () => {
   // 拿到JSON文本数据
   let characterData = require(resolve(__dirname, '../../fullCharacters.json'))
   console.log(characterData.length) 
   // 遍历JSON,根据name拿到中文wiki对应的id
-  // characterData = [
-  //   characterData[0],
-  //   characterData[1]
-  // ]
   characterData = R.map(getWikiId, characterData) // 返回Prominse数组(async 数组)
   characterData = await Promise.all(characterData)
   // 根据id拿到详细detail信息
@@ -115,4 +113,40 @@ const normalizedContent = content => _.reduce(content, (acc, item) => {
   }
   return acc
 }, [])
-getWikiCharacters()
+const updateImagesToQiNiu = async () => {
+  // 获取待遍历json数据
+  let chineseCharactersData = require(resolve(__dirname, '../../chineseCharacters.json'))
+  // 遍历数据
+  chineseCharactersData = R.map(async (item) => {
+    // 拿到profile(头像)字段
+    let profile = item.profile
+    // 拿到images(剧照)字段
+    let images = item.images
+    // 请求上传
+    let key = `${item.nmId}/${randomToken(32)}`
+    console.log('profile保存在qiniu的key为 -----' + key)
+    await updateImage(profile, key)
+    // 保存字段
+    item.profile = key
+    // 遍历images
+    for (let i = 0; i < item.images.length; ++i) {
+      let _key = `${item.nmId}/${randomToken(32)}`
+      console.log('images保存在qiniu的key为 -----' + _key)
+      try {
+        await updateImage(item.images[i], _key)
+      } catch (e) {
+        item.images.splice(i, 1)
+      }
+      await sleep(100)
+      // 保存字段
+      item.images[i] = _key
+    }
+    return item
+  })(chineseCharactersData)
+  chineseCharactersData = await Promise.all(chineseCharactersData)
+  console.log('开始写入文件')
+  // 写入文件
+  writeFileSync('./qiniuCharacters.json', JSON.stringify(chineseCharactersData, null, 2), 'utf8')
+  console.log('保存文件完成')
+}
+updateImagesToQiNiu()
