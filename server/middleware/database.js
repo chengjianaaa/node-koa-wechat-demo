@@ -2,8 +2,9 @@ import mongoose from 'mongoose'
 import config from '../config'
 import fs from 'fs'
 import { resolve } from 'path'
+import R from 'ramda'
 
-const modelsPath = resolve(__dirname,'../database/schema')
+const modelsPath = resolve(__dirname, '../database/schema')
 
 fs.readdirSync(modelsPath)
   // .filter(file => ~file.search(/^[^\.].*\.js$/))
@@ -11,6 +12,15 @@ fs.readdirSync(modelsPath)
   // boolean -1 => true  0 => false
   .filter(file => !file.search(/^[^\.].*\.js$/))  // 若能匹配 则索引为0(需要整个文件名符合该正则,不是部分)
   .forEach(file => require(resolve(modelsPath, file)))
+
+const wikiHouseData = require(resolve(__dirname, '../../wikiHousesWithSwornMembers.json'))
+let wikiCharacterData = require(resolve(__dirname, '../../qiniuCharacters.json'))
+
+// 保证_id与nmId一致
+wikiCharacterData = R.map(i => {
+  i._id = i.nmId
+  return i
+})(wikiCharacterData) 
 
 export const database = app => {
   if (app.env === 'development') {
@@ -31,6 +41,21 @@ export const database = app => {
   })
   mongoose.connection.on('open', async () => {
     console.log('连接到mongodo数据库 :', config.db)
+    // 判断数据库是否存在该数据
+    const wikiHouseModel = mongoose.model('WikiHouse')
+    const wikiCharacterModel = mongoose.model('WikiCharacter')
+    
+    const isExistWikiHouse = await wikiHouseModel.find({}).exec()
+    const isExistWikiCharacterModel = await wikiCharacterModel.find({}).exec()
+    if (!isExistWikiHouse.length) {
+      wikiHouseModel.insertMany(wikiHouseData)
+    } else {
+      console.log('wikiHouseModel 已存在数据')
+    }
+    if (!isExistWikiCharacterModel.length) {
+      wikiCharacterModel.insertMany(wikiCharacterData)
+    } else {
+      console.log('wikiCharacterModel 已存在数据')
+    }
   })
-  
 }

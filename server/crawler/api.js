@@ -29,5 +29,3 @@ export const getAllCharacterData = async (currentPage = 1) => {
     getAllCharacterData(++currentPage)
   }
 }
-
-getAllCharacterData()

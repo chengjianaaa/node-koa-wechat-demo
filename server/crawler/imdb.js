@@ -170,6 +170,7 @@ const fetchIMDBImage = async (url) => {
   })
   return images
 }
+
 const cheackIMDBProfile = () => {
   const charactersWithProfileData = require(resolve(__dirname, '../../imdbWithProfile.json'))
   console.log('------cheackIMDBProfile------初始数据数量------' + charactersWithProfileData.length)
@@ -186,5 +187,3 @@ const cheackIMDBProfile = () => {
   writeFileSync('./imdbWithProfileValid.json', JSON.stringify(validCharactersWithProfileData, null, 2), 'utf8')
   console.log('------cheackIMDBProfile------写入JSON文件------完成-----')
 }
-
-getIMDBCharacterImageData()
