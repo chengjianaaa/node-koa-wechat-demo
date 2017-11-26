@@ -1,4 +1,5 @@
 const state = {
+  imageCdnPrefix: 'http://ozwiwzrks.bkt.clouddn.com/', // 图片CDN前缀
   houses: [], // 首页家族列表
   characters: [], // 首页角色列表
   cities: [], // 首页城市列表

@@ -1,6 +1,7 @@
 <template lang='pug'>
   .container
     .house-banner
+      img(v-if='currentHouse.cname' :src="imageCdnPrefix + currentHouse.cname + '.jpg?imageView2/1/w/750/h/460/format/jpg/q/90|imageslim'")
       .desc
         .words {{ currentHouse.words }}
         .name {{ currentHouse.name }}
@@ -10,10 +11,10 @@
         .body {{currentHouse.intro}}
       .house-character
         .title 主要角色
-        .character-item(v-for="(item, index) in currentHouse.swornMenbers" :key='index')
-          img(:src="item.profile")
+        .character-item(v-for="(item, index) in currentHouse.swornMembers" :key='index')
+          img(:src="imageCdnPrefix + item.character.profile + '?imageView2/1/w/280/h/440'")
           .desc
-            .name {{item.cname}}
+            .name {{item.character.cname}}
             .introducion {{item.text}}
       .house-section(v-for='(item, index) in currentHouse.sections' :key='index') 
         .title {{item.title}}
@@ -30,7 +31,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentHouse'
+      'currentHouse',
+      'imageCdnPrefix'
     ])
   },
   created() {
@@ -55,8 +57,19 @@ export default {
     .house-banner
       position: relative
       font-size: 0
+      img
+        width: 100%
       .desc
-        font-size: 10px
+        width: 100%
+        +border-box
+        padding: 0 $spacing
+        text-align: left
+        position: absolute
+        bottom: 5%
+        left: 0
+        color: $white
+        +font-dpr(10px)
+        line-height: .7rem
         .words
           font-size: 1.6em
         .name
@@ -94,6 +107,7 @@ export default {
               margin-bottom: $spacing
             .introducion
               font-size: 1.4em
+              color: $grey-600
               line-height: $spacing
       .house-section > *
         width: 100%

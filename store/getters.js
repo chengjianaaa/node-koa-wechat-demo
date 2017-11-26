@@ -1,4 +1,7 @@
 export default {
+  imageCdnPrefix(state) {
+    return state.imageCdnPrefix
+  },
   houses(state) {
     return state.houses
   },

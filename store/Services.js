@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const baseUrl = ''
-const baseApiUrl = 'http://rapapi.org/mockjsdata/29243'
+// const baseApiUrl = 'http://rapapi.org/mockjsdata/29243'
+const baseApiUrl = 'http://localhost:3000'
 class Services {
   getWechatSignature(url) {
     return axios.get(`${baseUrl}/wechat-signature?url=${url}`)

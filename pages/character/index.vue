@@ -1,10 +1,9 @@
 <template lang='pug'>
   .container
     .character-header
-      img.character-header-bg(v-if='currentCharacter.images' :src='currentCharacter.images[currentCharacter.images.length - 1]')
-      //-img.character-header-bg(v-if='currentCharacter.images' :src='https://fireice.iblack7.com/Cersei Lannister/p7c6ly3akeoqa5q0xnjkpssuh32j847j?imageView2/1/w/375/h/230/format/jpg/q/90|imageslim')
+      img.character-header-bg(v-if='currentCharacter.images' :src='imageCdnPrefix + currentCharacter.images[currentCharacter.images.length - 1]')
       .character-media
-        img(v-if='currentCharacter.profile', :src='currentCharacter.images')
+        img(v-if='currentCharacter.profile', :src='imageCdnPrefix + currentCharacter.profile')
         .character-desc
           .character-text-wrapper
             p.cname {{currentCharacter.cname}}
@@ -13,9 +12,7 @@
       .introduce
         p(v-for='item in currentCharacter.intro') {{ item }}
       .stills
-        img(v-for='(item, index) in currentCharacter.images' :key='index' :src='item')
-      //-.focusCharacter-stills
-      //-img(v-for='item in character.images', :src="imageCDN + item + '?imageView2/1/w/750/h/460/format/jpg/q/90|imageslim'")
+        img(v-for='(item, index) in currentCharacter.images' :key='index' :src='imageCdnPrefix + item')
       .character-section(v-for='(item, index) in currentCharacter.sections' :key='index') 
         .title {{item.title}}
         .body(v-for='text in item.content') {{ text }}
@@ -31,7 +28,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentCharacter'
+      'currentCharacter',
+      'imageCdnPrefix'
     ])
   },
   created() {
@@ -122,6 +120,7 @@ export default {
         padding: $spacing 0 $spacing $spacing
         img
           width: 80%
+          max-height: 5rem
         img:not(:last-child)
           margin-right: $spacing/2
       
