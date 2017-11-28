@@ -2,7 +2,22 @@ import xss from 'xss'
 import R from 'ramda'
 import { controller, get, post, put, del } from '../decorator/router'
 import api from '../api'
+import * as qiniu from '../libs/qiniu'
 
+function formatAndFilterProductData(preUpdateProduct, newProduct) {
+  console.log(newProduct)
+  preUpdateProduct.title = newProduct.title ? xss(newProduct.title) : preUpdateProduct.title ? preUpdateProduct.title : 'null'
+  preUpdateProduct.price = newProduct.price ? xss(newProduct.price) : preUpdateProduct.price ? preUpdateProduct.price : 'null'
+  preUpdateProduct.intro = newProduct.intro ? xss(newProduct.intro) : preUpdateProduct.intro ? preUpdateProduct.intro : 'null'
+  preUpdateProduct.images = newProduct.images ? R.map(xss)(newProduct.images) : preUpdateProduct.images
+  preUpdateProduct.parameters = newProduct.parameters ? R.map(
+    i => ({
+      key: xss(newProduct.key),
+      value: xss(newProduct.value)
+    })
+  )(newProduct.parameters) : preUpdateProduct.parameters
+  return preUpdateProduct
+}
 @controller('/api')
 export class ProductController {
   @get('/product')
@@ -53,21 +68,11 @@ export class ProductController {
       return api.apiError('postProduct上传post的不存在')
     }
     // 校验xss
-    product = {
-      title: xss(product.title),
-      price: xss(product.price),
-      intro: xss(product.intro),
-      images: R.map(xss)(product.images),
-      parameters: R.map(
-        i => ({
-          key: xss(i.key),
-          value: xss(i.value)
-        })
-      )(product.parameters)
-    }
+    let prePostProduct = {}
+    prePostProduct = formatAndFilterProductData(prePostProduct, product)
     try {
       // 保存数据库
-      const retData = await api.product.postProduct(product)
+      const retData = await api.product.postProduct(prePostProduct)
       // 整理数据
       // 返回JSON数据
       ctx.apiSuccess(retData)
@@ -101,16 +106,7 @@ export class ProductController {
     }
     // 校验xss
     // 更新数据
-    preUpdateProduct.title = product.title ? xss(product.title) : preUpdateProduct.title
-    preUpdateProduct.price = product.price ? xss(product.price) : preUpdateProduct.price
-    preUpdateProduct.intro = product.intro ? xss(product.intro) : preUpdateProduct.intro
-    preUpdateProduct.images = product.images ? R.map(xss)(product.images) : preUpdateProduct.images
-    preUpdateProduct.parameters = product.parameters ? R.map(
-      i => ({
-        key: xss(product.key),
-        value: xss(product.value)
-      })
-    )(product.parameters) : preUpdateProduct.parameters
+    preUpdateProduct = formatAndFilterProductData(preUpdateProduct, product)
     try {
       // 更新数据库数据
       const retData = await api.product.putProduct(preUpdateProduct)
@@ -154,5 +150,18 @@ export class ProductController {
       console.log('controller---product---delProduct---失败')
       ctx.apiError(error)
     }
+  }
+  @get('/qiniu/uploadtoken')
+  async getQiniuUploadToken(ctx, next) {
+    // 拿到key
+    const { key } = ctx.query // ?key=xxx
+    // 调用后端api
+    let retData = qiniu.getUploadtoken(key)
+    // console.log(retData)
+    // 返回数据
+    ctx.apiSuccess({
+      key: key,
+      token: retData
+    })
   }
 } 

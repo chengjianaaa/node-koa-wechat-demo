@@ -25,6 +25,7 @@
     "nuxt": "1.0.0-alpha1",
     "pug": "^2.0.0-rc.4",
     "qiniu": "^7.1.1",
+    "qiniu-web-uploader": "^2.1.2",
     "ramda": "^0.25.0",
     "random-token": "^0.0.8",
     "request-promise": "^4.2.2",

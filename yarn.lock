@@ -5126,6 +5126,10 @@ q@^1.1.2:
   version "1.5.1"
   resolved "http://registry.npm.taobao.org/q/download/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
+qiniu-web-uploader@^2.1.2:
+  version "2.1.2"
+  resolved "http://registry.npm.taobao.org/qiniu-web-uploader/download/qiniu-web-uploader-2.1.2.tgz#ff73e9aca67ff07ce18226836aaa801c59bd4d97"
+
 qiniu@^7.1.1:
   version "7.1.1"
   resolved "http://registry.npm.taobao.org/qiniu/download/qiniu-7.1.1.tgz#12138888e41036be49b8923caa8eef81dea2a94a"

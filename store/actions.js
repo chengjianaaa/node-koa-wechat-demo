@@ -54,6 +54,24 @@ export default {
     console.log(res.data)
     return res.data
   },
+  async postProductsData({ commit, state }, product) {
+    // 获取数据
+    const res = await Services.postProductsData(product)
+    console.log(res.data)
+    return res.data
+  },
+  async putProductsData({ commit, state }, product) {
+    // 获取数据
+    const res = await Services.putProductsData(product)
+    console.log(res.data)
+    return res.data
+  },
+  async delProductsData({ commit, state }, product) {
+    // 获取数据
+    const res = await Services.delProductsData(product)
+    console.log(res.data)
+    return res.data
+  },
   async getUserData({ commit, state }, id = null) {
     // 获取数据
     const res = await Services.getUserData(id)
