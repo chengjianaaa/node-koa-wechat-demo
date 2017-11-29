@@ -5,17 +5,16 @@ import api from '../api'
 import * as qiniu from '../libs/qiniu'
 
 function formatAndFilterProductData(preUpdateProduct, newProduct) {
-  console.log(newProduct)
   preUpdateProduct.title = newProduct.title ? xss(newProduct.title) : preUpdateProduct.title ? preUpdateProduct.title : 'null'
   preUpdateProduct.price = newProduct.price ? xss(newProduct.price) : preUpdateProduct.price ? preUpdateProduct.price : 'null'
   preUpdateProduct.intro = newProduct.intro ? xss(newProduct.intro) : preUpdateProduct.intro ? preUpdateProduct.intro : 'null'
   preUpdateProduct.images = newProduct.images ? R.map(xss)(newProduct.images) : preUpdateProduct.images
-  preUpdateProduct.parameters = newProduct.parameters ? R.map(
+  preUpdateProduct.parameters = newProduct.parameters ? (R.map(
     i => ({
-      key: xss(newProduct.key),
-      value: xss(newProduct.value)
+      key: xss(i.key),
+      value: xss(i.value)
     })
-  )(newProduct.parameters) : preUpdateProduct.parameters
+  )(newProduct.parameters)) : preUpdateProduct.parameters
   return preUpdateProduct
 }
 @controller('/api')

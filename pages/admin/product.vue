@@ -62,7 +62,7 @@
               transition-group(name="delay" tag="div" )
                 .parameter-item(v-for='(item, index) in edited.parameters' v-bind:key='index')
                   input(v-model='item.key', placeholder='名称')
-                  input(v-model='item.vlue', placeholder='值')
+                  input(v-model='item.value', placeholder='值')
                   .remove(@click='removeParameter(index)')
                     .material-icon remove
         .edit-footer
@@ -170,6 +170,7 @@ export default {
     async saveEdited() {
       // 调用接口,传递this.edited(v-modl双向绑定)
       let result = null
+      console.log(this.edited)
       result = this.isUpdateProduct ? await this.putProductsData(this.edited) : await this.postProductsData(this.edited)
       // 判断请求是否成功
       if(result.success === true) {
@@ -207,7 +208,7 @@ export default {
       this.edited = product
     },
     async deleteProduct(product, index) {
-      // TODO 确定删除框
+      // TODO: 确定删除框
       let result = await this.delProductsData(product)
       if(result.success === true) {
         this.apiResultCode = SUCCESS_DEL_CODE
@@ -279,11 +280,6 @@ export default {
       'putProductsData',
       'delProductsData'
     ])
-  },
-  watch: {
-    isEditing: function(newValue) {
-      console.log('current isEditing ----' + newValue)
-    }
   },
   components: {
     vSnackbar
