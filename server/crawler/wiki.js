@@ -102,7 +102,7 @@ export const updateImagesToQiNiu = async () => {
     // 保存字段
     item.profile = key
     // 遍历images
-    for (let i = 0; i < item.images.length; ++i) {
+    for (let i = 0; i < images.length; ++i) {
       let _key = `${item.nmId}/${randomToken(32)}`
       console.log('images保存在qiniu的key为 -----' + _key)
       try {

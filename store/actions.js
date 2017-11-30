@@ -1,6 +1,20 @@
 import * as types from './mutations_type'
 import Services from './Services'
 export default {
+  // nuxt官网介绍nuxtServerInit
+  // If the action nuxtServerInit is defined in the store, 
+  // Nuxt.js will call it with the context (only from the server-side). 
+  // It's useful when we have some data on the server we want to give directly to the client-side.
+  nuxtServerInit({ commit }, { req }) {
+    if (req.session && req.session.currentUser) {
+      const { email, nickname, avatarUrl } = req.session.currentUser
+      commit(types.SET_USER, {
+        email,
+        nickname,
+        avatarUrl
+      })
+    }
+  },
   getWechatSignature({ commit }, url) {
     console.log('--------dispatch --- getWechatSignature----------')
     return Services.getWechatSignature(url)
@@ -79,5 +93,28 @@ export default {
     commit(types.SET_USER, res.data.data)
     console.log(res.data)
     return res.data
+  },
+  async login({ commit, state }, user) {
+    // 校验参数
+    if (!user || !user.email || !user.password) {
+      return {
+        success: false,
+        err: 'user 参数缺少'
+      }
+    }
+    try {
+      // login api
+      const res = await Services.login(user)
+      // 校验
+      if (res.data.success || res.data.success === true) {
+        // 保存 user 到 state
+        commit(types.SET_USER, res.data.data)
+      }
+      return res.data
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error('来错地方了')
+      }
+    }
   }
 }

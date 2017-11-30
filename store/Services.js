@@ -5,11 +5,19 @@ const baseUrl = ''
 const baseApiUrl = 'http://localhost:3000'
 class Services {
   getWechatSignature(url) {
-    return axios.get(`${baseUrl}/wechat-signature?url=${url}`)
+    try {
+      return axios.get(`${baseUrl}/wechat-signature?url=${url}`)
+    } catch (error) {
+      throw error
+    }
   }
   getUserByOAuth(url) {
     console.log('------services ---- getUserByOAuth----url---' + `${baseUrl}/wechat-oauth?url=${url}`)
-    return axios.get(`${baseUrl}/wechat-oauth?url=${url}`)
+    try {
+      return axios.get(`${baseUrl}/wechat-oauth?url=${url}`)
+    } catch (error) {
+      throw error
+    }
   }
   async getHousesData(id = null) {
     // 组装好url
@@ -18,10 +26,14 @@ class Services {
       url = `${url}/${id}`
     }
     console.log('--------getHousesData-------url-----' + url)
-    // 异步请求数据
-    const data = await axios.get(url)
-    // 返回数据
-    return data
+    try {
+      // 异步请求数据
+      const data = await axios.get(url)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async getCharacterssData(id = null) {
     // 组装好url
@@ -30,10 +42,14 @@ class Services {
       url = `${url}/${id}`
     }
     console.log('--------getCharacterssData-------url----' + url)
-    // 异步请求数据
-    const data = await axios.get(url)
-    // 返回数据
-    return data
+    try {
+      // 异步请求数据
+      const data = await axios.get(url)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async getCitiesData(id = null) {
     // 组装好url
@@ -42,10 +58,14 @@ class Services {
       url = `${url}/${id}`
     }
     console.log('--------getCitiesData-------url-----' + url)
-    // 异步请求数据
-    const data = await axios.get(url)
-    // 返回数据
-    return data
+    try {
+      // 异步请求数据
+      const data = await axios.get(url)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async getProductsData(id = null) {
     // 组装好url
@@ -54,23 +74,31 @@ class Services {
       url = `${url}/${id}`
     }
     console.log('--------getProductseData-------url-----' + url)
-    // 异步请求数据
-    const data = await axios.get(url)
-    // 返回数据
-    return data
+    try {      
+      // 异步请求数据
+      const data = await axios.get(url)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async postProductsData(product) {
     // 组装好url
     let url = `${baseApiUrl}/api/product`
     if (!product) {
       console.log('上传 的product 为空')
-      return 
+      return
     }
     console.log('--------postProductsData-------url-----' + url)
-    // 异步请求数据
-    const data = await axios.post(url, product)
-    // 返回数据
-    return data
+    try {
+      // 异步请求数据
+      const data = await axios.post(url, product)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async putProductsData(product) {
     // 组装好url
@@ -80,10 +108,14 @@ class Services {
       return 
     }
     console.log('--------putProductsData-------url-----' + url)
-    // 异步请求数据
-    const data = await axios.put(url, product)
-    // 返回数据
-    return data
+    try {
+      // 异步请求数据
+      const data = await axios.put(url, product)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async delProductsData(product) {
     // 组装好url
@@ -93,10 +125,14 @@ class Services {
     }
     let url = `${baseApiUrl}/api/product/${product._id}`
     console.log('--------delProductsData-------url-----' + url)
-    // 异步请求数据
-    const data = await axios.delete(url, product)
-    // 返回数据
-    return data
+    try {
+      // 异步请求数据
+      const data = await axios.delete(url, product)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async getUserData(id = null) {
     // 组装好url
@@ -105,10 +141,33 @@ class Services {
       url = `${url}/${id}`
     }
     console.log('--------getUserData-------url-----' + url)
-    // 异步请求数据
-    const data = await axios.get(url)
-    // 返回数据
-    return data
+    try {
+      // 异步请求数据
+      const data = await axios.get(url)
+      // 返回数据
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+  async login(user) {
+    const url = `${baseApiUrl}/admin/login`
+    if (!user || !user.email || !user.password) {
+      return {
+        success: false,
+        err: 'user 参数缺少'
+      }
+    }
+    console.log('--------login-------url-----' + url)
+    try {
+      const data = await axios.post(url, {
+        email: user.email,
+        password: user.password
+      })
+      return data
+    } catch (error) {
+      throw error
+    }
   }
 }
 export default new Services()

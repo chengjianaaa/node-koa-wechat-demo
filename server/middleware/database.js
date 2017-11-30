@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import R from 'ramda'
 
 const modelsPath = resolve(__dirname, '../database/schema')
+const ROLE_ADMIN = 'admin'
 
 fs.readdirSync(modelsPath)
   // .filter(file => ~file.search(/^[^\.].*\.js$/))
@@ -57,5 +58,23 @@ export const database = app => {
     } else {
       console.log('wikiCharacterModel 已存在数据')
     }
+    // 增加管理员帐号
+    let User = mongoose.model('User')
+    let adminUser = await User.findOne({
+      email: 'admin@admin.com'
+    }).exec()
+    // 判断是否提前录入管理员帐号
+    if (!adminUser) {
+      console.log('正在录入管理员......' + config.admin_email)
+      // 录入
+      adminUser = new User({
+        email: config.admin_email,
+        password: config.admin_password,
+        role: ROLE_ADMIN
+      })
+      await adminUser.save()
+      console.log('录入管理员' + adminUser.email + '完成')
+    }
+    // 放行(什么也不做)
   })
 }

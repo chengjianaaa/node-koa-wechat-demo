@@ -38,6 +38,7 @@ class Server {
 
     this.app.use(async (ctx, next) => {
       ctx.status = 200
+      ctx.req.session = ctx.session // 绑定koa-session的ctx.session到ctx.req.session中
       await nuxt.render(ctx.req, ctx.res)
     })
 

@@ -97,7 +97,7 @@ const BLOCK_SIZE = 1024 * 1024 * 4
 const CHUNK_SIZE = 1024 * 128
 
 export default {
-  layout: 'admin',
+  layout: 'admin', // 里面包含鉴定是否登录的中间件
   head() {
     return {
       title: '手办录入页面'
@@ -208,7 +208,6 @@ export default {
       this.edited = product
     },
     async deleteProduct(product, index) {
-      // TODO: 确定删除框
       let result = await this.delProductsData(product)
       if(result.success === true) {
         this.apiResultCode = SUCCESS_DEL_CODE
