@@ -18,7 +18,7 @@ export const getAllCharacterData = async (currentPage = 1) => {
   console.log('------分析爬虫------getAllCharacterData------共爬到 ' + data.length + ' 条数据------现在共有------' + (data.length + charactersData.length))
   CURRENT_TIME++
   console.log('------处理爬虫------组装数据------' + CURRENT_TIME)
-  charactersData = _.union(charactersData, data) // TODO 自己实现union
+  charactersData = _.union(charactersData, data) // TODO: 自己实现union
   if (data.length < PAGE_SIZE) {
     console.log('------结束爬虫------写入JSON文件------开始-----')
     console.log('------结束爬虫------写入JSON文件------完成-----')

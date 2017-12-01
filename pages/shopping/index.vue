@@ -2,8 +2,8 @@
   .container
     .shopping-header 权游周边
     .shopping-content
-      .shopping-item(v-for='(item, index) in products' :key='index')
-        img(:src="item.images[0]" @click='_goToDetailProductPage(item._id)')
+      .shopping-item(v-for='(item, index) in products' :key='index' @click='_goToDetailProductPage(item._id)')
+        img(:src="imageCdnPrefix + item.images[0]")
         .desc
           .title {{item.title}}
           .introducion {{item.intro}}
@@ -18,7 +18,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'products'
+      'products',
+      'imageCdnPrefix'
     ])
   },
   created() {

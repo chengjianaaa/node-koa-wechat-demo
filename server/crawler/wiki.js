@@ -88,7 +88,7 @@ const normalizedSections = R.compose(
 // 上传 基于亚马逊图床的图片 到 七牛云上,并替换相应profile/images字段
 export const updateImagesToQiNiu = async () => {
   // 获取待遍历json数据
-  let chineseCharactersData = require(resolve(__dirname, '../../chineseCharacters.json'))
+  let chineseCharactersData = require(resolve(__dirname, '../database/json/chineseCharacters.json'))
   // 遍历数据
   chineseCharactersData = R.map(async (item) => {
     // 拿到profile(头像)字段
@@ -192,7 +192,7 @@ export const getWikiDetailById = async (data) => {
 // 获取WikiCharacters的主要流程
 export const getWikiCharacters = async () => {
   // 拿到JSON文本数据
-  let characterData = require(resolve(__dirname, '../../fullCharacters.json'))
+  let characterData = require(resolve(__dirname, '../database/json/fullCharacters.json'))
   console.log(characterData.length)
   // 遍历JSON,根据name拿到中文wiki对应的id
   characterData = R.map(getWikiId, characterData) // 返回Prominse数组(async 数组)
@@ -228,9 +228,9 @@ export const getWikiHouse = async () => {
 // 获取getSwornMembers的主要流程
 export const getSwornMembers = () => {
   // 拿到wikiHouse家族数据
-  let wikiHouseData = require(resolve(__dirname, '../../wikiHouses.json'))
+  let wikiHouseData = require(resolve(__dirname, '../database/json/wikiHouses.json'))
   // 拿到qiniuCharacters角色数据
-  let qiniuCharacterData = require(resolve(__dirname, '../../qiniuCharacters.json'))
+  let qiniuCharacterData = require(resolve(__dirname, '../database/json/qiniuCharacters.json'))
   // 遍历
   // 过滤数据
   let swornMembers = R.map(

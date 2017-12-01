@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <img src="../static/img/logo.png" alt="Nuxt.js Logo" class="logo" />
+    <span>测试微信JS-SDK获取权限</span>
     <h1 class="title">
       This page is loaded from the {{ name }}
     </h1>

@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <img src="../static/img/logo.png" alt="Nuxt.js Logo" class="logo" />
+    <span>测试微信网页授权</span>
     <h1 class="title">
       TESTOAUTH This page is loaded from the {{ name }}
     </h1>

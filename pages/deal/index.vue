@@ -4,12 +4,12 @@
       .deal-swiper(v-swiper='swiperConfig')
         .swiper-wrapper
           .swiper-slide(v-for='(item, index) in currentProduct.images')
-            img(:src='item')
+            img(:src='imageCdnPrefix + item')
         .swiper-pagination.swiper-pagination-bullets
       .deal-content
         .price
-          span.main {{ currentProduct.price.toFixed(2) - currentProduct.price.toFixed(2).substr(-3) }}
-          span.others {{ currentProduct.price.toFixed(2).substr(-3) }}
+          span.main {{ Number(currentProduct.price).toFixed(2) - Number(currentProduct.price).toFixed(2).substr(-3) }}
+          span.others {{ Number(currentProduct.price).toFixed(2).substr(-3) }}
         .name {{ currentProduct.title }}
         .intro {{ currentProduct.intro }}
         .info
@@ -22,6 +22,7 @@
       span 购买
 </template>
 <script>
+//TODO: 支付功能
 import { mapActions, mapGetters } from 'vuex'
 import Cell from '~components/cell'
 export default {
@@ -46,7 +47,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentProduct'
+      'currentProduct',
+      'imageCdnPrefix'
     ])
   },
   created() {

@@ -8,8 +8,8 @@ import { resolve } from 'path'
 export const getIMDBCharacterData = async () => {
   // 构建请求参数
   const options = {
-    // uri: 'http://www.imdb.com/title/tt0944947/fullcredits?ref_=tt_cl_sm#cast',
-    uri: 'http://localhost:8888/', // 本地静态数据HTML
+    uri: 'http://www.imdb.com/title/tt0944947/fullcredits?ref_=tt_cl_sm#cast',
+    // uri: 'http://localhost:8888/', // 本地静态数据HTML
     transform: (body) => {
       // writeFileSync('./imdb.html', body, 'utf8')
       return cheerio.load(body)
@@ -49,7 +49,7 @@ export const getIMDBCharacterData = async () => {
       // /title/tt0944947/characters/nm5141232?ref_=ttfc_fc_cl_t488
       const reg2 = /\/title\/(.*?)\/characters\/(.*?)\?ref/
       // Faith Militant\n         / ...  \n  \n  \n  (uncredited)
-      const reg3 = /(.*?)\n(.*?)/ // TDDO 优化掉多个\n
+      const reg3 = /(.*?)\n(.*?)/ // TODO: 优化掉多个\n
       const match1 = item.nmId.match(reg1)
       const match2 = item.chId.match(reg2)
       const match3 = item.name.match(reg3)
@@ -72,7 +72,7 @@ export const getIMDBCharacterData = async () => {
 // 获取头像
 export const getIMDBCharacterProfileData = async () => {
   // 读取wikiCharacters.json
-  const charactersData = require(resolve(__dirname, '../../wikiCharacters.json'))
+  const charactersData = require(resolve(__dirname, '../database/json/wikiCharacters.json'))
   // 遍历wikiCharacters.json,根据nmId 来获取图片url
   // let tempLength = 2
   for (let i = 0; i < charactersData.length; i++) {
@@ -95,7 +95,7 @@ export const getIMDBCharacterProfileData = async () => {
 // 获取剧照
 export const getIMDBCharacterImageData = async () => {
   // 读取.json数据
-  const imdbWithProfileValidData = require(resolve(__dirname, '../../imdbWithProfileValid.json'))
+  const imdbWithProfileValidData = require(resolve(__dirname, '../database/json/imdbWithProfileValid.json'))
   // 遍历
   for (let i = 0; i < 2; i++) {
     let item = imdbWithProfileValidData[i]
@@ -172,7 +172,7 @@ const fetchIMDBImage = async (url) => {
 }
 
 const cheackIMDBProfile = () => {
-  const charactersWithProfileData = require(resolve(__dirname, '../../imdbWithProfile.json'))
+  const charactersWithProfileData = require(resolve(__dirname, '../database/json/imdbWithProfile.json'))
   console.log('------cheackIMDBProfile------初始数据数量------' + charactersWithProfileData.length)
   let validCharactersWithProfileData = []
   charactersWithProfileData.forEach(function(item, index) {

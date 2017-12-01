@@ -3,9 +3,9 @@ import R from 'ramda'
 import { find } from 'lodash'
 import { writeFileSync } from 'fs'
 //  拿到character数据(from api)
-const charactersData = require(resolve(__dirname, '../../characters.json'))
+const charactersData = require(resolve(__dirname, '../database/json/characters.json'))
 //  拿到imdb数据 (from imdb)
-const imdbData = require(resolve(__dirname, '../../imdb.json'))
+const imdbData = require(resolve(__dirname, '../database/json/imdb.json'))
 
 console.log(charactersData.length) // 2100
 console.log(imdbData.length) // 720

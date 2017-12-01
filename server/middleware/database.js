@@ -14,8 +14,8 @@ fs.readdirSync(modelsPath)
   .filter(file => !file.search(/^[^\.].*\.js$/))  // 若能匹配 则索引为0(需要整个文件名符合该正则,不是部分)
   .forEach(file => require(resolve(modelsPath, file)))
 
-const wikiHouseData = require(resolve(__dirname, '../../wikiHousesWithSwornMembers.json'))
-let wikiCharacterData = require(resolve(__dirname, '../../qiniuCharacters.json'))
+const wikiHouseData = require(resolve(__dirname, '../database/json/wikiHousesWithSwornMembers.json'))
+let wikiCharacterData = require(resolve(__dirname, '../database/json/qiniuCharacters.json'))
 
 // 保证_id与nmId一致
 wikiCharacterData = R.map(i => {
