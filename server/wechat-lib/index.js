@@ -41,6 +41,7 @@ export default class WeChat {
       return response
     } catch (error) {
       console.log(error)
+      throw error
     }
   }
   async haddle(operation, ...args) {
@@ -48,23 +49,28 @@ export default class WeChat {
     // 拿到options
     // const options = this[operation].apply(this, [token.access_token, ...args])
     const options = this[operation](token.access_token, ...args)
-    const {data} = await this.request(options)
-    console.log('----------拿到handdle的数据-------------')
-    console.log(data)
-    return data
+    try {
+      const {data} = await this.request(options)
+      console.log('----------拿到handdle的数据-------------')
+      console.log(data)
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async fetchAccessToken() {
-    // 从缓存里面取AccessToken
-    let token = await this.getAccessToken()
-    
-    // 校验AccessToken是否失效
-    !this.isValidToken(token, ACCESS_TOKEN) && (token = await this.updateAccessToken())
-
-    console.log('---fetchAccessToken 保存前-----')
-    // 保存AccessToken
-    await this.saveAccessToken(token)
-
-    return token
+    try {
+      // 从缓存里面取AccessToken
+      let token = await this.getAccessToken()
+      // 校验AccessToken是否失效
+      !this.isValidToken(token, ACCESS_TOKEN) && (token = await this.updateAccessToken())
+      console.log('---fetchAccessToken 保存前-----')
+      // 保存AccessToken
+      await this.saveAccessToken(token)
+      return token
+    } catch (error) {
+      throw error
+    }
   }
 
   async updateAccessToken() {
@@ -73,23 +79,27 @@ export default class WeChat {
     const url = API.GET_ACCESS_TOKEN + '&appid=' + this.appID + '&secret=' + this.appSecret
     let { data } = await axios.get(url)
     console.log(data)
-    // TODO 判断是否更新成功 => 有没有errcode字段
+    // TODO: 判断是否更新成功 => 有没有errcode字段
     const now = (new Date().getTime()) // 返回距离1970.1.1有多少毫秒
     const expiresIn = now + (data.expires_in - 20) * 1000 // data.expires_in单位为秒(7200 => 2小时) 需要将 秒 转为 毫秒( * 1000)
     data.expires_in = expiresIn
     return data
   }
   async fetchTicket(accessToken) {
-    // 从缓存里面取AccessToken
-    let ticket = await this.getTicket()
-    
-    // 校验AccessToken是否失效
-    !this.isValidToken(ticket, TICKET) && (ticket = await this.updateTicket(accessToken))
-
-    // 保存Ticket
-    await this.saveTicket(ticket)
-
-    return ticket
+    try {      
+      // 从缓存里面取AccessToken
+      let ticket = await this.getTicket()
+      
+      // 校验AccessToken是否失效
+      !this.isValidToken(ticket, TICKET) && (ticket = await this.updateTicket(accessToken))
+  
+      // 保存Ticket
+      await this.saveTicket(ticket)
+  
+      return ticket
+    } catch (error) {
+      throw error
+    }
   }
 
   async updateTicket(accessToken) {
@@ -97,12 +107,16 @@ export default class WeChat {
     // 进行网络请求
     const url = API.GET_TICKET + '&access_token=' + accessToken + '&type=jsapi'
     console.log('--------- ticket url ----' + url)
-    let { data } = await axios.get(url)
-    // TODO 判断是否更新成功 => 有没有errcode字段
-    const now = (new Date().getTime()) // 返回距离1970.1.1有多少毫秒
-    const expiresIn = now + (data.expires_in - 20) * 1000 // data.expires_in单位为秒(7200 => 2小时) 需要将 秒 转为 毫秒( * 1000)
-    data.expires_in = expiresIn
-    return data
+    try {
+      let { data } = await axios.get(url)
+      // TODO: 判断是否更新成功 => 有没有errcode字段
+      const now = (new Date().getTime()) // 返回距离1970.1.1有多少毫秒
+      const expiresIn = now + (data.expires_in - 20) * 1000 // data.expires_in单位为秒(7200 => 2小时) 需要将 秒 转为 毫秒( * 1000)
+      data.expires_in = expiresIn
+      return data
+    } catch (error) {
+      throw error
+    }
   }
 
   isValidToken(token, type) {

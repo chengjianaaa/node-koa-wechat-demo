@@ -11,6 +11,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 export default {
+  middleware: 'wechat-auth', // 微信授权中间件
   head () {
     return {
       title: '周边手办'

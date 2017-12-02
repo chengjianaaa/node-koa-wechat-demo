@@ -25,6 +25,7 @@ export class WeChatController {
   async weChatRedirect(ctx, next) {
     return redirect(ctx, next)
   }
+  // 获取用户信息
   @get('/wechat-oauth')
   async weChatOauth(ctx, next) {
     return oauth(ctx, next)

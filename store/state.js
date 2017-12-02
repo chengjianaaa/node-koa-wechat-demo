@@ -7,7 +7,8 @@ const state = {
   currentHouse: {}, // 当前选中家族
   currentCharacter: {}, // 当前选中角色
   currentProduct: {}, // 当前选中手办
-  user: {} //  当前用户(里面含有订单)
+  user: {}, // 当前用户(里面含有订单)
+  authUser: null // 当前授权微信用户
 }
 
 export default state

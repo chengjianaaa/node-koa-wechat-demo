@@ -24,6 +24,9 @@ const mutations = {
   },
   [types.SET_USER](state, user) {
     state.user = user
+  },
+  [types.SET_AUTH_USER](state, authUser) {
+    state.authUser = authUser
   }
 }
 

@@ -16,83 +16,115 @@ export default {
     }
   },
   getWechatSignature({ commit }, url) {
-    console.log('--------dispatch --- getWechatSignature----------')
-    return Services.getWechatSignature(url)
+    try {
+      console.log('--------dispatch --- getWechatSignature----------')
+      return Services.getWechatSignature(url)
+    } catch (error) {
+      throw error
+    }
   },
   getUserByOAuth({ commit }, url) {
-    console.log('--------dispatch --- getUserByOAuth----------')
-    return Services.getUserByOAuth(url)
+    try {
+      console.log('--------dispatch --- getUserByOAuth----------')
+      return Services.getUserByOAuth(url)
+    } catch (error) {
+      throw error
+    }
   },
   async getHousesData({ commit, state }, id = null) {
-    console.log('--------action------getHousesData--------')
-    // 获取数据
-    const res = await Services.getHousesData(id)
-    // 保存在state中
-    if (id) {
-      commit(types.SET_CURRENT_HOUSE, res.data.data)
-    } else {
-      commit(types.SET_HOUSES, res.data.data)
+    try {
+      console.log('--------action------getHousesData--------')
+      // 获取数据
+      const res = await Services.getHousesData(id)
+      // 保存在state中
+      if (id) {
+        commit(types.SET_CURRENT_HOUSE, res.data.data)
+      } else {
+        commit(types.SET_HOUSES, res.data.data)
+      }
+      return res.data
+    } catch (error) {
+      throw error
     }
-    console.log(res.data)
-    return res.data
   },
   async getCharactersData({ commit, state }, id = null) {
-    // 获取数据
-    const res = await Services.getCharacterssData(id)
-    // 保存在state中
-    if (id) {
-      commit(types.SET_CURRENT_CHARACTER, res.data.data)
-    } else {
-      commit(types.SET_CHARACTERS, res.data.data)
+    try {
+      // 获取数据
+      const res = await Services.getCharacterssData(id)
+      // 保存在state中
+      if (id) {
+        commit(types.SET_CURRENT_CHARACTER, res.data.data)
+      } else {
+        commit(types.SET_CHARACTERS, res.data.data)
+      }
+      return res.data
+    } catch (error) {
+      throw error
     }
-    console.log(res.data)
-    return res.data
   },
   async getCitiseData({ commit, state }, id = null) {
-    // 获取数据
-    const res = await Services.getCitiesData(id)
-    // 保存在state中
-    commit(types.SET_CITIES, res.data.data)
-    console.log(res.data)
-    return res.data
+    try {
+      // 获取数据
+      const res = await Services.getCitiesData(id)
+      // 保存在state中
+      commit(types.SET_CITIES, res.data.data)
+      return res.data
+    } catch (error) {
+      throw error
+    }
   },
   async getProductsData({ commit, state }, id = null) {
-    // 获取数据
-    const res = await Services.getProductsData(id)
-    // 保存在state中
-    if (id) {
-      commit(types.SET_CURRENT_PRODUCT, res.data.data)
-    } else {
-      commit(types.SET_PRODUCTS, res.data.data)
+    try {
+      // 获取数据
+      const res = await Services.getProductsData(id)
+      // 保存在state中
+      if (id) {
+        commit(types.SET_CURRENT_PRODUCT, res.data.data)
+      } else {
+        commit(types.SET_PRODUCTS, res.data.data)
+      }
+      return res.data
+    } catch (error) {
+      throw error
     }
-    console.log(res.data)
-    return res.data
   },
   async postProductsData({ commit, state }, product) {
-    // 获取数据
-    const res = await Services.postProductsData(product)
-    console.log(res.data)
-    return res.data
+    try {
+      // 获取数据
+      const res = await Services.postProductsData(product)
+      return res.data
+    } catch (error) {
+      throw error
+    }
   },
   async putProductsData({ commit, state }, product) {
-    // 获取数据
-    const res = await Services.putProductsData(product)
-    console.log(res.data)
-    return res.data
+    try {
+      // 获取数据
+      const res = await Services.putProductsData(product)
+      return res.data
+    } catch (error) {
+      throw error
+    }
   },
   async delProductsData({ commit, state }, product) {
-    // 获取数据
-    const res = await Services.delProductsData(product)
-    console.log(res.data)
-    return res.data
+    try {
+      // 获取数据
+      const res = await Services.delProductsData(product)
+      return res.data
+    } catch (error) {
+      throw error
+    }
   },
   async getUserData({ commit, state }, id = null) {
-    // 获取数据
-    const res = await Services.getUserData(id)
-    // 保存在state中
-    commit(types.SET_USER, res.data.data)
-    console.log(res.data)
-    return res.data
+    try {
+      // 获取数据
+      const res = await Services.getUserData(id)
+      // 保存在state中
+      commit(types.SET_USER, res.data.data)
+      return res.data
+    } catch (error) {
+      throw error
+    }
   },
   async login({ commit, state }, user) {
     // 校验参数

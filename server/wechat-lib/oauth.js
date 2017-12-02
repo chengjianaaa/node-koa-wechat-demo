@@ -17,10 +17,8 @@ export default class OAuthWeChat {
     this.options = Object.assign({}, options)
     this.appID = options.appID
     this.appSecret = options.appSecret
-
-    // this.fetchAccessToken()
   }
-
+  // 通用请求方法
   async request(options) {
     options = Object.assign({}, options, { json: true })
     try {
@@ -28,16 +26,18 @@ export default class OAuthWeChat {
       return response
     } catch (error) {
       console.log(error)
+      throw error
     }
   }
+  // 组装微信网页授权(获取code)的url
   getAuthorizeCodeURL(redirectUrl, state, scope = SCOPE_TYPE_SNSAPI_BASE) {
     // 组装URL
     const url = `${API.GET_AUTHORIZE_CODE}appid=${this.appID}&redirect_uri=${encodeURIComponent(redirectUrl)}&response_type=code&scope=${scope}&state=${state}#wechat_redirect`
     console.log(redirectUrl)
     console.log('---OAuth------getAuthorizeCodeURL(OAuth)组装的URL-------' + url)
-
     return url
   }
+  // 用 code 获取微信网页授权的access_token
   async fetchAccessToken(code) {
     const url = `${API.GET_ACCESS_TOKEN}appid=${this.appID}&secret=${this.appSecret}&code=${code}&grant_type=authorization_code`
     console.log('---OAuth------fetchAccessToken(OAuth)组装的URL-------' + url)
@@ -45,6 +45,7 @@ export default class OAuthWeChat {
     return data
   }
 
+  // 用 access_token 和 openId 获取微信网页授权 的用户信息
   async getUserInfo(accessToken, openId, lang = LANGUAGE_CHINESE) {
     const url = `${API.GET_USER_INFO}access_token=${accessToken}&openid=${openId}&lang=${lang}`
     console.log('---OAuth-----getUserInfo(OAuth)组装的URL-------' + url)

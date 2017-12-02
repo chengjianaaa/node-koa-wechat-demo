@@ -25,5 +25,8 @@ export default {
   },
   user(state) {
     return state.user
+  },
+  authUser(state) {
+    return state.authUser
   }
 }
